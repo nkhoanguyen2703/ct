@@ -1,3 +1,13 @@
   body {
       color: #777;
   }
+
+  .noidungtintuc img[style]{
+        width:auto !important;
+        height:auto !important;
+        max-width: 100% !important;
+        display: block;
+        margin-left: 50%; 
+        margin-right: 50%;
+    }
+

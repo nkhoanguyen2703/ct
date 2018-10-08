@@ -67,6 +67,7 @@
 if(isset($_POST['btn_themcanbo'])){
 	$ma = $_POST['ma'];
 	$pwd = $_POST['pwd'];
+	$pwd = md5($pwd);
 	$ten = $_POST['ten'];
 	$gioitinh = $_POST['gioitinh'];
 	$khoa = $_POST['khoa'];

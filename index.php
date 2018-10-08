@@ -11,7 +11,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   <!--imported by me-->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
   <style>
     *{
       margin: 0px; padding: 0px;
@@ -30,17 +30,24 @@
 error_reporting(E_ERROR | E_PARSE); //hide Warning message
 include "navbar.php"; 
 include "database.php"; 
+include "function.php";
 session_start(); 
 ?>
 
-<img src="images/banner.jpg" style="width:100%;"/>
+<img src="images/banner.jpg" style="width:100%; margin: 0px 0px 20px 0px;"/>
+
+
+
 <div class="container">
+
 
     <?php
       $page = "homepage.php";
+
       if(isset($_GET['key'])){
         $page=$_GET['key'];
       }
+      
       include $page;
     ?>
 
@@ -48,12 +55,12 @@ session_start();
 
 
 
-    <!-- Footer -->
-    <div class="panel panel-default">
-      <div class="panel-body">
-        Footer
-      </div>
-    </div>
+<!-- Footer -->
+<div class="panel panel-default">
+  <div class="panel-body">
+    Footer
+  </div>
+</div>
 
 
 

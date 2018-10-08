@@ -29,6 +29,10 @@
         include "../database.php";
         include "function.php";
         session_start();
+        
+        if(isset($_SESSION["listcb"])==false){ // Để add cán bộ vào bảng thực hiện , công việc 
+            $_SESSION["listcb"]=array();
+        }
     ?>
 </head>
 
@@ -56,6 +60,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="?keyad=doan.php">Quản lý đoàn </a></li>
                 <li><a href="?keyad=duan.php">Quản lý dự án </a></li>
+                <!-- <li><a href="?keyad=congviec.php">Quản lý công việc </a></li> -->
                 <li><a href="?keyad=canbo.php">Quản lý TK </a></li>
             </ul>
         <?php
@@ -79,6 +84,7 @@
 error_reporting(E_ERROR | E_PARSE); //hide Warning message
 
 $file="login.php";
+
 if(isset($_SESSION['admin'])){
     $file="doan.php";
     if(isset($_GET['keyad'])){

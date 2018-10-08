@@ -18,6 +18,7 @@
 
 
 	  	<h2>Thông tin đoàn</h2>
+	  	<a href="?keyad=congviec.php&doan=<?=$doan_id?>">Sắp xếp công việc</a>
 	  	<div class="well">
 		  	<?=$doan['doan_ten']?><br>
 		  	Đến: <?=$doan['doan_thoigianden']?><br>
@@ -45,6 +46,7 @@
 
 
 	  	<h4>Thêm thành viên</h4>
+	  	<p><i>Nếu thành viên đã tồn tại, chỉ cần nhập số hộ chiếu sau đó nhập thông tin visa </i></p>
 		<form action="" method="POST">
 		  	<div class="form-group">
 			    <label>Tên thành viên:</label>
@@ -278,7 +280,7 @@ if(isset($_POST['btn_themthanhvien'])){
 	//check
 	$hochieu_tontai = tim_passport($hochieu,$db);
 	if($hochieu_tontai == true){ //thành viên cũ
-		$themvisa = "INSERT INTO visa values('','$vs_ngaycap','vs_ngayhethan','$vs_noicap','$hochieu');";
+		$themvisa = "INSERT INTO visa values('$visa','$vs_ngaycap','vs_ngayhethan','$vs_noicap','$hochieu');";
 		$do = mysqli_query($db,$themvisa);
 
 		$thanhvienID = getThanhVienIdByPassport($hochieu,$db);
@@ -286,9 +288,9 @@ if(isset($_POST['btn_themthanhvien'])){
 		$do6 = mysqli_query($db,$themDoanThanhVien);
 
 		if($do and $do6){
-			echo "<script>alert('Đã thêm');window.location='?keyad=chitietdoan.php';</script>";
+			echo "<script>alert('Đã thêm một thành viên cũ');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
 		}else{
-			echo "<script>alert('Thông tin visa hoặc thông tin thành viên đã tồn tại trên hệ thống');</script>";
+			echo "<script>alert('Thành viên đã tồn tại');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
 		}
 
 		
@@ -302,6 +304,7 @@ if(isset($_POST['btn_themthanhvien'])){
 			$namsinh = date('Y-m-d', strtotime($_POST['namsinh']));
 		}
 		$thanhvienID = getNextIDValueByTable(thanhvien,$db);
+
 		$themTV = "INSERT INTO thanhvien values('$thanhvienID','$ten','$namsinh')"; //them thanh vien
 		$do2 = mysqli_query($db,$themTV);
 
@@ -315,7 +318,7 @@ if(isset($_POST['btn_themthanhvien'])){
 		$do5 = mysqli_query($db,$themDoanThanhVien);
 
 		if($do2 and $do3 and $do4 and $do5){
-			echo "<script>alert('Đã thêm');window.location='?keyad=chitietdoan.php&doan=$doan_id';</script>";
+			echo "<script>alert('Đã thêm thành viên mới');window.location='?keyad=chitietdoan.php&doan=$doan_id';</script>";
 		}else{
 			echo "<script>alert('Lỗi xảy ra 101xx');</script>";
 		}
@@ -334,6 +337,7 @@ if(isset($_GET['phancongTV'])){
 		echo "<script>alert('Đã phân công');window.location='?keyad=chitietdoan.php&doan=$doan_id';</script>";
 	}
 }
+
 
 
 //xoa thanh vien ra khoi doan hien tai

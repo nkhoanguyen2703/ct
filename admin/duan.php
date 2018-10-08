@@ -62,7 +62,7 @@
 	    		 <?php  
 	    		 }
 	    		 ?>
-	    		
+	    		<br><a href="?keyad=chitietduan.php&duan=<?=$id?>">Chi tiết dự án</a>
 	    	</div>
 	    	</div>
 
