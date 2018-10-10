@@ -46,6 +46,22 @@
 
 
 	  	<h4>Thêm thành viên</h4>
+
+	  	<!--tim thanh vien cu-->
+	  	<form action="?keyad=themthanhviencu.php" method="POST">
+		    <div class="input-group">
+		      <input type="text" class="form-control" placeholder="Nhập số hộ chiếu để tìm" name="pp">
+		      <input type="hidden" name="doan" value="<?=$doan_id?>">
+		      <div class="input-group-btn">
+		        <button class="btn btn-default" name="timthanhvien" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+		      </div>
+		    </div>
+		  </form>
+
+		 
+
+
+
 	  	<p><i>Nếu thành viên đã tồn tại, chỉ cần nhập số hộ chiếu sau đó nhập thông tin visa </i></p>
 		<form action="" method="POST">
 		  	<div class="form-group">
@@ -279,19 +295,42 @@ if(isset($_POST['btn_themthanhvien'])){
 
 	//check
 	$hochieu_tontai = tim_passport($hochieu,$db);
+
 	if($hochieu_tontai == true){ //thành viên cũ
+
+		//check đoàn id, nếu tv đã có trong đoàn hiện tại thì ko thêm nữa
+		// nếu tv chưua có trong đoàn hiện tại, thì chỉ thêm đoàn_thành viên 
+
+		$thanhvienID = getThanhVienIdByPassport($hochieu,$db); //thanh vien id cu~
+		$tontaithanhvientrongdoanhientai = checkTonTaiTrongDoan($thanhvienID,$doan_id,$db);
+		if($tontaithanhvientrongdoanhientai == true){ //da ton tai trong doan
+			echo "<script>alert('Thành viên đã tồn tại trong đoàn');</script>";
+		}else{ //thanh vien chua ton tai trong doan, thì thêm vào đoàn thành viên
+			$themDoanThanhVien = "INSERT INTO doan_thanhvien values('$doan_id',$thanhvienID,0)"; //them Doan_ThanhVien
+			$do6 = mysqli_query($db,$themDoanThanhVien);
+			if($do6){//them vao doan_thanhvien
+				echo "<script>alert('Đã thêm một thành viên cũ');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
+			}
+		}
+
+
 		$themvisa = "INSERT INTO visa values('$visa','$vs_ngaycap','vs_ngayhethan','$vs_noicap','$hochieu');";
 		$do = mysqli_query($db,$themvisa);
 
-		$thanhvienID = getThanhVienIdByPassport($hochieu,$db);
-		$themDoanThanhVien = "INSERT INTO doan_thanhvien values('$doan_id',$thanhvienID,0)"; //them Doan_ThanhVien
-		$do6 = mysqli_query($db,$themDoanThanhVien);
+		
 
-		if($do and $do6){
-			echo "<script>alert('Đã thêm một thành viên cũ');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
+		if($do){//them dc visa moi
+			$thanhvienID = getThanhVienIdByPassport($hochieu,$db);
+			$themDoanThanhVien = "INSERT INTO doan_thanhvien values('$doan_id',$thanhvienID,0)"; //them Doan_ThanhVien
+			$do6 = mysqli_query($db,$themDoanThanhVien);
+			if($do6){//them vao doan_thanhvien
+				echo "<script>alert('Đã thêm một thành viên cũ');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
+			}
 		}else{
 			echo "<script>alert('Thành viên đã tồn tại');window.location='?keyad=chitietdoan.php&doan=".$doan_id."';</script>";
 		}
+
+		
 
 		
 	}else{ //thanh vien mới

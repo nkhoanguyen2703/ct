@@ -42,5 +42,16 @@
 		return $tv[0];
 	}
 
+	function checkTonTaiTrongDoan($thanhvienID,$doan_id,$db){
+		$sql = "select count(*) from doan_thanhvien where doan_id=$doan_id and tv_id=$thanhvienID";
+		$do = mysqli_query($db,$sql);
+		$kq = mysqli_fetch_array($do);
+		if($kq > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 
 ?>
